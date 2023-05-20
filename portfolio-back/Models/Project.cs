@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace portfolio_back.Models;
 
 public class Project
 {
-    public int Id { get; set; }
+    [Column(TypeName = "TEXT")]
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public string Frontend { get; set; }

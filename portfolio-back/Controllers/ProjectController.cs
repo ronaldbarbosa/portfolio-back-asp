@@ -22,7 +22,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Project>> GetProject(int id)
+    public async Task<ActionResult<Project>> GetProject(Guid id)
     {
         return await _projectRepository.Get(id);
     }
@@ -31,11 +31,12 @@ public class ProjectController : ControllerBase
     public async Task<ActionResult<Project>> CreateProject([FromBody] Project project)
     {
         var newProject = await _projectRepository.Create(project);
+        newProject.Id = Guid.NewGuid();
         return CreatedAtAction(nameof(GetProject), new { id = newProject.Id }, newProject);
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteProject(int id)
+    public async Task<ActionResult> DeleteProject(Guid id)
     {
         var projectToDelete = await _projectRepository.Get(id);
         if (projectToDelete == null)
@@ -47,12 +48,8 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> UpdateProject(int id, [FromBody] Project project)
+    public async Task<ActionResult> UpdateProject(Guid id, [FromBody] Project project)
     {
-        if (id != project.Id)
-        {
-            return BadRequest();
-        }
         await _projectRepository.Update(project);
         return NoContent();
     }

@@ -17,7 +17,7 @@ public class ProjectRepository : IProjectRepository
         return await _context.Projects.ToListAsync();
     }
 
-    public async Task<Project> Get(int id)
+    public async Task<Project> Get(Guid id)
     {
         return await _context.Projects.FindAsync(id);
     }
