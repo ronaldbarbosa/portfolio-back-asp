@@ -4,6 +4,8 @@ using portfolio_back.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors();
+
 // Add services to the container.
 builder.Services.AddDbContext<ProjectContext>(x => x.UseSqlite("Data source=projects.db"));
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
@@ -21,6 +23,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .WithOrigins("http://localhost:3000/")
+    .AllowCredentials());
 
 app.UseHttpsRedirection();
 
