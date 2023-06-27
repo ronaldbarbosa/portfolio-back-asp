@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors();
 
-// Add services to the container.
-builder.Services.AddDbContext<ProjectContext>(x => x.UseSqlite("Data source=projects.db"));
+// DB Connection
+builder.Services.AddDbContext<ProjectContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalConnection")));
+
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 builder.Services.AddControllers();
