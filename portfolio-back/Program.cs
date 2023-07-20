@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using portfolio_back.Models;
 using portfolio_back.Repositories;
 
@@ -6,9 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors();
 
-// DB Connection
 builder.Services.AddDbContext<ProjectContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalConnection")));
+   options => options.UseSqlServer(builder.Configuration.GetConnectionString("localconnection")));
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
@@ -20,7 +20,6 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 app.UseSwagger();
 app.UseSwaggerUI();
 

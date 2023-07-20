@@ -1,6 +1,7 @@
 using portfolio_back.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using portfolio_back.Models;
+using portfolio_back.Attributes;
 
 namespace portfolio_back.Controllers;
 
@@ -26,7 +27,8 @@ public class ProjectController : ControllerBase
     {
         return await _projectRepository.Get(id);
     }
-    
+
+    [ApiKeyAtribute]
     [HttpPost]
     public async Task<ActionResult<Project>> CreateProject([FromBody] Project project)
     {
@@ -35,6 +37,7 @@ public class ProjectController : ControllerBase
         return CreatedAtAction(nameof(GetProject), new { id = newProject.Id }, newProject);
     }
 
+    [ApiKeyAtribute]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProject(Guid id)
     {
@@ -47,6 +50,7 @@ public class ProjectController : ControllerBase
         return NoContent();
     }
 
+    [ApiKeyAtribute]
     [HttpPut]
     public async Task<ActionResult> UpdateProject(Guid id, [FromBody] Project project)
     {
