@@ -2,6 +2,7 @@ using portfolio_back.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using portfolio_back.Models;
 using portfolio_back.Attributes;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace portfolio_back.Controllers;
 
@@ -10,16 +11,27 @@ namespace portfolio_back.Controllers;
 public class ProjectController : ControllerBase
 {
     private readonly IProjectRepository _projectRepository;
+    private readonly IMemoryCache _memoryCache;
+    private const string PROJECTS_KEY = "Projects";
     
-    public ProjectController(IProjectRepository projectRepository)
+    public ProjectController(IProjectRepository projectRepository, IMemoryCache memoryCache)
     {
         _projectRepository = projectRepository;
+        _memoryCache = memoryCache;
     }
 
     [HttpGet]
     public async Task<IEnumerable<Project>> GetProjects()
     {
-        return await _projectRepository.Get();
+        if(_memoryCache.TryGetValue(PROJECTS_KEY, out IEnumerable<Project> projects))
+        {
+            return projects;
+        }
+
+        projects = await _projectRepository.Get();
+        _memoryCache.Set(PROJECTS_KEY, projects);
+
+        return projects;
     }
 
     [HttpGet("{id}")]
