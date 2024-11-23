@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 
 builder.Services.AddDbContext<ProjectContext>(
-   options => options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection")));
+   options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalConnection")));
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
